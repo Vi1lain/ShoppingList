@@ -4,7 +4,7 @@ plugins {
     //kotlin("kapt")
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
-    id("com.google.devtools.ksp")
+
 
 }
 
@@ -71,7 +71,7 @@ dependencies {
     //Room
     val room_version = "2.5.2"
     implementation("androidx.room:room-runtime:$room_version")
-    ksp("androidx.room:room-compiler:2.5.2")
+    kapt("androidx.room:room-compiler:2.5.2")
     implementation("androidx.room:room-ktx:$room_version")
 
     implementation("androidx.core:core-ktx:1.12.0")
