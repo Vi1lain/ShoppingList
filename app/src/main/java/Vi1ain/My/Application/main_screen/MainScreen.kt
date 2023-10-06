@@ -16,7 +16,7 @@ import androidx.compose.ui.res.painterResource
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MainScreen() {
-    Scaffold(bottomBar = {}, floatingActionButton = {
+    Scaffold(bottomBar = {BottomNav()}, floatingActionButton = {
         FloatingActionButton(onClick = { /*TODO*/ }) {
 Icon(tint = Color.White, painter = painterResource(id = R.drawable.add_icon), contentDescription = "Add")
         }
