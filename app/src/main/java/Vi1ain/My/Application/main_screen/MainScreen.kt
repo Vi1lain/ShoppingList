@@ -9,6 +9,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -17,7 +18,7 @@ import androidx.compose.ui.res.painterResource
 fun MainScreen() {
     Scaffold(bottomBar = {}, floatingActionButton = {
         FloatingActionButton(onClick = { /*TODO*/ }) {
-Icon(painter = painterResource(id = R.drawable.add_icon), contentDescription = "add")
+Icon(tint = Color.White, painter = painterResource(id = R.drawable.add_icon), contentDescription = "Add")
         }
     }, floatingActionButtonPosition = FabPosition.Center) {
 
