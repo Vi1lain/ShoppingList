@@ -7,5 +7,5 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun ShoppingListScreen() {
-    Text(modifier = Modifier.fillMaxSize(), text = "Shopping List Screen")
+    Text( text = "Shopping List Screen",modifier = Modifier.fillMaxSize())
 }
