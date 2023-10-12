@@ -1,4 +1,4 @@
-package Vi1ain.My.Application.utils
+package Vi1ain.My.Application.dialog
 
 import androidx.compose.runtime.MutableState
 
@@ -7,5 +7,7 @@ interface DialogController {
     val editableText:MutableState<String>
     val openDialog:MutableState<Boolean>
     val showEditableText:MutableState<Boolean>
+    fun OnDialogEvent(event: DialgoEvent)
+
 
 }

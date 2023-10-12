@@ -1,21 +1,20 @@
 package Vi1ain.My.Application.shopping_list_sreen
 
 import Vi1ain.My.Application.R
+import Vi1ain.My.Application.data.ShoppingListItem
 import Vi1ain.My.Application.ui.theme.DarkText
 import Vi1ain.My.Application.ui.theme.LightGreenBackground
 import Vi1ain.My.Application.ui.theme.LightText
 import Vi1ain.My.Application.ui.theme.Purple
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -27,17 +26,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 
-@Preview(showBackground = true)
+
 @Composable
-fun UiShoppingListItem() {
+fun UiShoppingListItem(item: ShoppingListItem, onEvent: (ShoppingListEvent) -> Unit) {
     ConstraintLayout(modifier = Modifier.padding(start = 3.dp, end = 3.dp, top = 18.dp)) {
         val (card, editBottom, deleteBottom, counter) = createRefs()
         Card(modifier = Modifier
+            .clickable {
+
+
+            }
 
             .fillMaxWidth()
             .constrainAs(card) {
@@ -51,13 +53,13 @@ fun UiShoppingListItem() {
                     .padding(8.dp)
             ) {
                 Text(
-                    text = "List1",
+                    text = item.name,
                     style = TextStyle(color = DarkText),
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp
                 )
                 Text(
-                    text = "02/08/1988 11:00",
+                    text = item.time,
                     style = TextStyle(color = LightText),
                     fontSize = 12.sp
                 )
@@ -65,7 +67,7 @@ fun UiShoppingListItem() {
                     modifier = Modifier
                         .padding(top = 5.dp)
                         .fillMaxWidth(),
-                    trackColor = Color.Green
+                    trackColor = Color.Green, progress = 0.5f
                 )
             }
         }
@@ -77,7 +79,7 @@ fun UiShoppingListItem() {
 
             }
             .padding(end = 15.dp)
-            .size(30.dp), onClick = { /*TODO*/ }) {
+            .size(30.dp), onClick = { onEvent(ShoppingListEvent.OnShowDeleteDialog(item)) }) {
             Icon(
                 painter = painterResource(id = R.drawable.delete_icon),
                 contentDescription = "Delete",
@@ -97,7 +99,7 @@ fun UiShoppingListItem() {
 
             }
             .padding(end = 5.dp)
-            .size(30.dp), onClick = { /*TODO*/ }) {
+            .size(30.dp), onClick = { onEvent(ShoppingListEvent.OnShowEditDialog(item)) }) {
             Icon(
                 painter = painterResource(id = R.drawable.edit_icon),
                 contentDescription = "Edit",
@@ -123,7 +125,7 @@ fun UiShoppingListItem() {
                 .padding(end = 5.dp)
         ) {
             Text(
-                text = "00/00", color = Color.White,
+                text = "${item.allItemsCount}/${item.allSelectedItemsCount}", color = Color.White,
                 modifier = Modifier
                     .background(color = Purple)
                     .padding(

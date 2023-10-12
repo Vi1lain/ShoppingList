@@ -3,7 +3,7 @@ package Vi1ain.My.Application.shopping_list_sreen
 import Vi1ain.My.Application.data.ShoppingListItem
 import Vi1ain.My.Application.data.ShoppingListRepository
 import Vi1ain.My.Application.dialog.DialgoEvent
-import Vi1ain.My.Application.utils.DialogController
+import Vi1ain.My.Application.dialog.DialogController
 import Vi1ain.My.Application.utils.UiEvent
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -19,11 +19,12 @@ class ShoppingListViewModel @Inject constructor(
     private val repository: ShoppingListRepository,
 
     ) : ViewModel(), DialogController {
-    private val list = repository.getAllItems()
+     val list = repository.getAllItems()
 
     private val _uiEvent = Channel<UiEvent>()
  val uiEvent = _uiEvent.receiveAsFlow()
     private var listItem: ShoppingListItem? = null
+
     override var dialogTitle = mutableStateOf("")
         private set
     override var editableText = mutableStateOf("")
@@ -36,6 +37,7 @@ class ShoppingListViewModel @Inject constructor(
     fun onEvent(event: ShoppingListEvent) {
         when (event) {
             is ShoppingListEvent.OnItemSave -> {
+                if (editableText.value.isEmpty()) return
                 viewModelScope.launch {
                     repository.insertItem(
                         ShoppingListItem(
@@ -71,7 +73,7 @@ class ShoppingListViewModel @Inject constructor(
         }
     }
 
-    fun OnDialogEvent(event: DialgoEvent) {
+    override fun OnDialogEvent(event: DialgoEvent) {
         when (event) {
             is DialgoEvent.OnCansel -> {
                 openDialog.value = false
@@ -87,7 +89,7 @@ class ShoppingListViewModel @Inject constructor(
             }
 
             is DialgoEvent.TextChange -> {
-                editableText.value = event.teext
+                editableText.value = event.text
             }
         }
     }
