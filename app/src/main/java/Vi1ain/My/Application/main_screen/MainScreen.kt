@@ -15,12 +15,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MainScreen(viewModel: MainScreenViewModel = hiltViewModel()) {
+fun MainScreen(
+mainNavHostController:NavHostController,
+    viewModel: MainScreenViewModel = hiltViewModel()) {
     val navController = rememberNavController()
     Scaffold(bottomBar = { BottomNav(navController = navController) }, floatingActionButton = {
         FloatingActionButton(onClick = {
@@ -33,7 +36,9 @@ fun MainScreen(viewModel: MainScreenViewModel = hiltViewModel()) {
             )
         }
     }, floatingActionButtonPosition = FabPosition.Center) {
-        NavigationGraph(navController = navController)
+        NavigationGraph(navController = navController){route->
+            mainNavHostController.navigate(route = route)
+        }
 MainDialog(dialogController = viewModel)
 
     }

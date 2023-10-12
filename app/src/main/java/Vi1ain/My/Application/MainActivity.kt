@@ -1,6 +1,7 @@
 package Vi1ain.My.Application
 
 import Vi1ain.My.Application.main_screen.MainScreen
+import Vi1ain.My.Application.navigation.MainNavigationGraph
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -25,7 +26,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainScreen()
+                    MainNavigationGraph()
                 }
             }
         }

@@ -6,6 +6,7 @@ import Vi1ain.My.Application.ui.theme.DarkText
 import Vi1ain.My.Application.ui.theme.LightGreenBackground
 import Vi1ain.My.Application.ui.theme.LightText
 import Vi1ain.My.Application.ui.theme.Purple
+import Vi1ain.My.Application.utils.Routes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -38,7 +39,7 @@ fun UiShoppingListItem(item: ShoppingListItem, onEvent: (ShoppingListEvent) -> U
         Card(modifier = Modifier
             .clickable {
 
-
+onEvent(ShoppingListEvent.OnItemClick(route = Routes.ADD_ITEM))
             }
 
             .fillMaxWidth()
