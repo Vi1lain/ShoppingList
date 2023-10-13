@@ -19,7 +19,7 @@ import androidx.navigation.compose.rememberNavController
 fun MainNavigationGraph( ) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Routes.MAIN_SCREEN ){
-        composable(Routes.ADD_ITEM){ AddItemScreen() }
+        composable(Routes.ADD_ITEM+"/{listId}"){ AddItemScreen() }
         composable(Routes.NEW_NOTE){ NewNoteScreen() }
         composable(Routes.MAIN_SCREEN){ MainScreen(navController) }
     }

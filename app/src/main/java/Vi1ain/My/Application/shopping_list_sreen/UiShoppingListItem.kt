@@ -39,7 +39,7 @@ fun UiShoppingListItem(item: ShoppingListItem, onEvent: (ShoppingListEvent) -> U
         Card(modifier = Modifier
             .clickable {
 
-onEvent(ShoppingListEvent.OnItemClick(route = Routes.ADD_ITEM))
+onEvent(ShoppingListEvent.OnItemClick(route = Routes.ADD_ITEM+"/${item.id}"))
             }
 
             .fillMaxWidth()
