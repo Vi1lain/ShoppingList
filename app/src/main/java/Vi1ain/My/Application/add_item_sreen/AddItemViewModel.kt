@@ -5,12 +5,15 @@ import Vi1ain.My.Application.data.AddItemRepository
 import Vi1ain.My.Application.data.ShoppingListItem
 import Vi1ain.My.Application.dialog.DialgoEvent
 import Vi1ain.My.Application.dialog.DialogController
+import Vi1ain.My.Application.utils.UiEvent
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,6 +22,10 @@ class AddItemViewModel @Inject constructor(
     private val repository: AddItemRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel(), DialogController {
+
+    private val _uiEvent = Channel<UiEvent>()
+    val uiEvent = _uiEvent.receiveAsFlow()
+
     var itemList: Flow<List<AddItem>>? = null
     var addItem: AddItem? = null
     var shoppingListItem: ShoppingListItem? = null
@@ -48,10 +55,21 @@ class AddItemViewModel @Inject constructor(
             is AddItemEvent.OnItemSave -> {
                 viewModelScope.launch {
                     if (listId == -1) return@launch
+                    if (addItem!=null){
+                        if (addItem!!.name.isEmpty()){
+                            SendUiEvent(UiEvent.ShowSnackBar("Name is Empty!"))
+                            return@launch
+                        }
+                    }else{
+                        if (itemText.value.isEmpty()){
+                            SendUiEvent(UiEvent.ShowSnackBar("Name is Empty!"))
+                            return@launch
+                        }
+                    }
                     repository.insertItem(
                         AddItem(
                             addItem?.id,
-                            itemText.value,
+                            addItem?.name?:itemText.value,
                             addItem?.isCheck ?: false,
                             listId
                         )
@@ -62,7 +80,8 @@ class AddItemViewModel @Inject constructor(
                 updateShoppingListCount()
             }
 
-            is AddItemEvent.OnShowEditDialog -> {
+            is
+            AddItemEvent.OnShowEditDialog -> {
                 addItem = event.item
                 openDialog.value = true
                 editableText.value = addItem?.name ?: ""
@@ -97,8 +116,9 @@ class AddItemViewModel @Inject constructor(
 
             is DialgoEvent.OnConfirm -> {
                 openDialog.value = false
-                itemText.value = editableText.value
+                addItem = addItem?.copy(name = editableText.value)
                 editableText.value = ""
+                onEvent(AddItemEvent.OnItemSave)
             }
 
             is DialgoEvent.TextChange -> {
@@ -123,5 +143,8 @@ class AddItemViewModel @Inject constructor(
                     }
             }
         }
+    }
+    private fun SendUiEvent(event: UiEvent){
+        viewModelScope.launch { _uiEvent.send(event) }
     }
 }

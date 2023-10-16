@@ -22,7 +22,7 @@ class ShoppingListViewModel @Inject constructor(
      val list = repository.getAllItems()
 
     private val _uiEvent = Channel<UiEvent>()
- val uiEvent = _uiEvent.receiveAsFlow()
+    val uiEvent = _uiEvent.receiveAsFlow()
     private var listItem: ShoppingListItem? = null
 
     override var dialogTitle = mutableStateOf("")
