@@ -13,7 +13,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 
 @Composable
-fun BottomNav(navController: NavHostController) {
+fun BottomNav(currentRoute:String?,OnNavigate:(String)->Unit) {
     val listItems = listOf(
         BottomNavItem.ListItem,
         BottomNavItem.NoteItem,
@@ -22,11 +22,10 @@ fun BottomNav(navController: NavHostController) {
     )
     NavigationBar() {
         listItems.forEach { bottomNavItem ->
-            val navBackStackEntry by navController.currentBackStackEntryAsState()
-            val currentRoute = navBackStackEntry?.destination?.route
+
             NavigationBarItem(
                 selected = currentRoute == bottomNavItem.route,
-                onClick = { navController.navigate(bottomNavItem.route)},
+                onClick = { OnNavigate(bottomNavItem.route)},
                 icon = {
                     Icon(
                         painter = painterResource(id = bottomNavItem.iconId),
