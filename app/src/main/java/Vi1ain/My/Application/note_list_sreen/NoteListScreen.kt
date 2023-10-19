@@ -6,6 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun NoteScreen() {
+fun NoteListScreen() {
     Text(modifier = Modifier.fillMaxSize(), text = "Note Screen")
 }
