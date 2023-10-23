@@ -8,7 +8,7 @@ interface NoteItemRepository {
 
     suspend fun deleteItem(item: NoteItem)
 
-    fun getAllNote(): Flow<List<NoteItem>>
+    fun getAllItems(): Flow<List<NoteItem>>
 
     suspend fun getNoteItemBid(id: Int): NoteItem
 }

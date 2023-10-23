@@ -32,7 +32,7 @@ class NewNoteViewModel @Inject constructor(
         private set
 
     init {
-        noteId = savedStateHandle.get<String>("noteId")?.toInt()!!
+        noteId = savedStateHandle.get<String>("noteId")?.toInt()?:-1
         if (noteId != -1) {
             viewModelScope.launch {
                 repository.getNoteItemBid(noteId).let { noteItem ->

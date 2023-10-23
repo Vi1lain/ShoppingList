@@ -4,6 +4,7 @@ package Vi1ain.My.Application.main_screen
 import Vi1ain.My.Application.R
 import Vi1ain.My.Application.dialog.MainDialog
 import Vi1ain.My.Application.navigation.NavigationGraph
+import Vi1ain.My.Application.utils.Routes
 import Vi1ain.My.Application.utils.UiEvent
 import android.annotation.SuppressLint
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -55,7 +56,7 @@ fun MainScreen(
         floatingActionButton = {
             if (viewModel.showFloatingButtom.value)
                 FloatingActionButton(onClick = {
-                    viewModel.onEvent(event = MainScreenEvent.OnShowEditDialog)
+                    viewModel.onEvent(event = MainScreenEvent.OnNewItemClick(currentRoute?:Routes.SHOPPING_LIST))
                 }) {
                     Icon(
                         tint = Color.White,

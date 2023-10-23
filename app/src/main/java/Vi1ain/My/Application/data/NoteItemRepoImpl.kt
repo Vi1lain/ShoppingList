@@ -11,7 +11,7 @@ class NoteItemRepoImpl(private val dao: NoteDao):NoteItemRepository {
         dao.deleteItem(item)
     }
 
-    override fun getAllNote(): Flow<List<NoteItem>> {
+    override fun getAllItems(): Flow<List<NoteItem>> {
         return dao.getAllNote()
     }
 
