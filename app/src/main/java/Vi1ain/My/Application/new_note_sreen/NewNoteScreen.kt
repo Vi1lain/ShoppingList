@@ -43,7 +43,7 @@ fun NewNoteScreen(viewModel: NewNoteViewModel = hiltViewModel(), onPopBackStack:
         viewModel.uiEvent.collect { uiEvent ->
             when (uiEvent) {
                 is UiEvent.PopBackStack -> {
-                    onPopBackStack
+                    onPopBackStack()
                 }
 
                 else -> {}
