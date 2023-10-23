@@ -10,11 +10,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun MainNavigationGraph( ) {
+fun MainNavigationGraph() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Routes.MAIN_SCREEN ){
-        composable(Routes.ADD_ITEM+"/{listId}"){ AddItemScreen() }
-        composable(Routes.NEW_NOTE){ NewNoteScreen() }
-        composable(Routes.MAIN_SCREEN){ MainScreen(navController) }
+    NavHost(navController = navController, startDestination = Routes.MAIN_SCREEN) {
+        composable(Routes.ADD_ITEM + "/{listId}") { AddItemScreen() }
+        composable(Routes.NEW_NOTE) { NewNoteScreen() { navController.popBackStack() } }
+        composable(Routes.MAIN_SCREEN) { MainScreen(navController) }
     }
 }

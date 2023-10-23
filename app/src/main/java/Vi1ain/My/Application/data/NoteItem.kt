@@ -9,6 +9,6 @@ data class NoteItem(
     val id: Int? = null,
     val title: String,
     val description:String,
-    val time:Int,
+    val time:String,
 
 )
