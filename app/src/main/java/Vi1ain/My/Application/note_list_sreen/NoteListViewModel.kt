@@ -1,5 +1,6 @@
 package Vi1ain.My.Application.note_list_sreen
 
+import Vi1ain.My.Application.data.NoteItem
 import Vi1ain.My.Application.data.NoteItemRepository
 import Vi1ain.My.Application.dialog.DialgoEvent
 import Vi1ain.My.Application.dialog.DialogController
@@ -15,9 +16,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NoteListViewModel @Inject constructor(
-    repository: NoteItemRepository
+   private val repository: NoteItemRepository
 ) : ViewModel(), DialogController {
     val noteList = repository.getAllItems()
+    private var noteItem: NoteItem? = null
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
@@ -34,8 +36,34 @@ class NoteListViewModel @Inject constructor(
         viewModelScope.launch { _uiEvent.send(event) }
     }
 
+    fun OnEvent(event: NoteListEvent) {
+        when (event) {
+            is NoteListEvent.OnItemClick -> {
+                SendUiEvent(UiEvent.Navigate(event.route))
+            }
+            is NoteListEvent.OnShowDeleteDialog -> {
+                openDialog.value = true
+                noteItem = event.item
+            }
+        }
+    }
 
     override fun OnDialogEvent(event: DialgoEvent) {
-        TODO("Not yet implemented")
+        when (event) {
+            is DialgoEvent.OnCansel -> {
+                openDialog.value = false
+            }
+
+            is DialgoEvent.OnConfirm -> {
+                viewModelScope.launch {
+                    repository.deleteItem(noteItem!!)
+                }
+                openDialog.value = false
+            }
+
+            else -> {}
+        }
     }
+
+
 }

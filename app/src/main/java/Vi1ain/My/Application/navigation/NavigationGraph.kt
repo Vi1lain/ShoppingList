@@ -11,13 +11,19 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 
 @Composable
-fun NavigationGraph(navController: NavHostController,onNavigate: (String)-> Unit) {
-    NavHost(navController = navController, startDestination = Routes.SHOPPING_LIST ){
-        composable(Routes.SHOPPING_LIST){ ShoppingListScreen(){route->
-            onNavigate(route)
-        } }
-        composable(Routes.NOTE_LIST){ NoteListScreen() }
-        composable(Routes.SETTINGS){ SettingsScreen() }
-        composable(Routes.ABOUT){ AboutScreen() }
+fun NavigationGraph(navController: NavHostController, onNavigate: (String) -> Unit) {
+    NavHost(navController = navController, startDestination = Routes.SHOPPING_LIST) {
+        composable(Routes.SHOPPING_LIST) {
+            ShoppingListScreen() { route ->
+                onNavigate(route)
+            }
+        }
+        composable(Routes.NOTE_LIST) {
+            NoteListScreen() { route ->
+                onNavigate(route)
+            }
+        }
+        composable(Routes.SETTINGS) { SettingsScreen() }
+        composable(Routes.ABOUT) { AboutScreen() }
     }
 }

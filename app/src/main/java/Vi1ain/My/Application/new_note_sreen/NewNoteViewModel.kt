@@ -48,7 +48,12 @@ class NewNoteViewModel @Inject constructor(
             is NewNoteEvent.OnSave->{
                 viewModelScope.launch {
                     repository.insertItem(
-                        NoteItem(noteItem?.id, title, description, time = "02/08/1988")
+                        NoteItem(
+                            noteItem?.id,
+                            title,
+                            description,
+                            time = "02/08/1988"
+                        )
                     )
                 }
                 SendUiEvent(UiEvent.PopBackStack)

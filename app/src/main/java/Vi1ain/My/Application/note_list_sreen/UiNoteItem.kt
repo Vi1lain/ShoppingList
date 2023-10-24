@@ -1,7 +1,9 @@
 package Vi1ain.My.Application.note_list_sreen
 
+import Vi1ain.My.Application.data.NoteItem
 import Vi1ain.My.Application.ui.theme.BlueLight
 import Vi1ain.My.Application.ui.theme.LightText
+import Vi1ain.My.Application.utils.Routes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,13 +20,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-@Preview(showBackground = true)
+
 @Composable
-fun UiNoteItem() {
+fun UiNoteItem(
+    item: NoteItem,
+    onEvent: (NoteListEvent) -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -32,7 +36,11 @@ fun UiNoteItem() {
                 start = 3.dp, top = 3.dp, end = 3.dp
             )
             .clickable {
-
+                onEvent(
+                    NoteListEvent.OnItemClick(
+                        Routes.NEW_NOTE + "/${item.id}"
+                    )
+                )
             }
     ) {
         Column(Modifier.fillMaxWidth()) {
@@ -44,12 +52,12 @@ fun UiNoteItem() {
                     modifier = Modifier
                         .padding(top = 10.dp, start = 10.dp)
                         .weight(1f),
-                    text = "Note - 1",
+                    text = item.title,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = "17.10.2023",
+                    text = item.time,
                     modifier = Modifier.padding(top = 10.dp, end = 10.dp),
                     color = BlueLight,
                     fontSize = 12.sp
@@ -63,14 +71,16 @@ fun UiNoteItem() {
                     modifier = Modifier
                         .padding(top = 3.dp, start = 10.dp, bottom = 7.dp)
                         .weight(1f),
-                    text = "subtext 12345097",
+                    text = item.description,
                     fontSize = 16.sp,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                     color = LightText
                     //fontWeight = FontWeight.Bold
                 )
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = {
+                    onEvent(NoteListEvent.OnShowDeleteDialog(item))
+                }) {
                     Icon(
                         imageVector = Icons.Default.Delete,
                         contentDescription = "Delete",
