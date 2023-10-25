@@ -3,6 +3,7 @@ package Vi1ain.My.Application.new_note_sreen
 import Vi1ain.My.Application.data.NoteItem
 import Vi1ain.My.Application.data.NoteItemRepository
 import Vi1ain.My.Application.utils.UiEvent
+import Vi1ain.My.Application.utils.getCurrentTime
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -47,16 +48,22 @@ class NewNoteViewModel @Inject constructor(
         when(event){
             is NewNoteEvent.OnSave->{
                 viewModelScope.launch {
+                    if (title.isEmpty()){
+                        SendUiEvent(UiEvent.ShowSnackBar("title can not be empty"))
+                        return@launch
+                    }
+
                     repository.insertItem(
                         NoteItem(
                             noteItem?.id,
                             title,
                             description,
-                            time = "02/08/1988"
+                            noteItem?.time?: getCurrentTime()
                         )
                     )
+                    SendUiEvent(UiEvent.PopBackStack)
                 }
-                SendUiEvent(UiEvent.PopBackStack)
+
             }
             is NewNoteEvent.OnTitleChange -> {
                 title = event.title

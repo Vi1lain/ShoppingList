@@ -5,6 +5,7 @@ import Vi1ain.My.Application.data.ShoppingListRepository
 import Vi1ain.My.Application.dialog.DialgoEvent
 import Vi1ain.My.Application.dialog.DialogController
 import Vi1ain.My.Application.utils.UiEvent
+import Vi1ain.My.Application.utils.getCurrentTime
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -43,7 +44,7 @@ class ShoppingListViewModel @Inject constructor(
                         ShoppingListItem(
                             listItem?.id,
                             editableText.value,
-                            "02-08-1988",
+                            listItem?.time ?:getCurrentTime(),
                             listItem?.allItemsCount ?: 0,
                             listItem?.allSelectedItemsCount ?: 0
                         )

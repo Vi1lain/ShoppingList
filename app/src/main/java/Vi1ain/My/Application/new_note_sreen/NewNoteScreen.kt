@@ -7,11 +7,11 @@ import Vi1ain.My.Application.ui.theme.BlueLight
 import Vi1ain.My.Application.ui.theme.DarkText
 import Vi1ain.My.Application.ui.theme.GrayLight
 import Vi1ain.My.Application.utils.UiEvent
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -20,11 +20,16 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -34,12 +39,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 
 @Composable
 fun NewNoteScreen(
     viewModel: NewNoteViewModel = hiltViewModel(),
-    onPopBackStack: () -> Unit) {
+    onPopBackStack: () -> Unit
+) {
+    val snackbarHostState = remember { SnackbarHostState() }
     LaunchedEffect(key1 = true) {
         viewModel.uiEvent.collect { uiEvent ->
             when (uiEvent) {
@@ -47,75 +55,91 @@ fun NewNoteScreen(
                     onPopBackStack()
                 }
 
+                is UiEvent.ShowSnackBar -> {
+                    snackbarHostState.showSnackbar(uiEvent.message)
+                }
+
                 else -> {}
             }
 
         }
     }
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = GrayLight)
-    ) {
-        Card(
+
+    Scaffold(snackbarHost = { SnackbarHost(snackbarHostState) { data ->
+        Snackbar(
+            snackbarData = data,
+            containerColor = BlueLight,
+
+        )
+    } }) {
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(7.dp), shape = RoundedCornerShape(10.dp)
+                .background(color = GrayLight)
         ) {
-            Column(
-                modifier = Modifier.fillMaxWidth()
+            Card(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(7.dp), shape = RoundedCornerShape(10.dp)
             ) {
-                Row(
-                    modifier = Modifier.fillMaxSize()
+                Column(
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    TextField(
-                        modifier = Modifier.weight(1f),
-                        value = viewModel.title,
+                    Row(
+                        modifier = Modifier
+                            .background(Color.White)
+                            .fillMaxWidth()
+                    ) {
+                        TextField(
+                            modifier = Modifier.weight(1f),
+                            value = viewModel.title,
+                            onValueChange = { text ->
+                                viewModel.OnEvent(NewNoteEvent.OnTitleChange(text))
+                            },
+                            label = { Text(text = "Title", fontSize = 14.sp) },
+                            colors = TextFieldDefaults.textFieldColors(
+                                containerColor = Color.White,
+                                focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = BlueLight
+                            ),
+                            singleLine = true,
+                            textStyle = TextStyle(
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = DarkText
+                            )
+                        )
+                        IconButton(onClick = {
+                            viewModel.OnEvent(NewNoteEvent.OnSave)
+                        }) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.save_icon),
+                                contentDescription = "Save", tint = BlueLight
+                            )
+                        }
+
+                    }
+
+                    TextField(modifier = Modifier.fillMaxSize(),
+                        value = viewModel.description,
                         onValueChange = { text ->
-                            viewModel.OnEvent(NewNoteEvent.OnTitleChange(text))
-                        },
-                        label = { Text(text = "Title", fontSize = 14.sp) },
-                        colors = TextFieldDefaults.textFieldColors(
+                            viewModel.OnEvent(NewNoteEvent.OnDescriptionChange(text))
+                        }, label = {
+                            Text(
+                                text = "Description",
+                                fontSize = 14.sp
+                            )
+                        }, colors = TextFieldDefaults.textFieldColors(
                             containerColor = Color.White,
                             focusedIndicatorColor = Color.Transparent,
-                            unfocusedIndicatorColor = BlueLight
-                        ),
-                        singleLine = true,
-                        textStyle = TextStyle(
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold,
+                            unfocusedIndicatorColor = Color.Transparent,
+
+                            ), textStyle = TextStyle(
+                            fontSize = 14.sp,
                             color = DarkText
                         )
                     )
-                    IconButton(onClick = {
-                        viewModel.OnEvent(NewNoteEvent.OnSave)
-                    }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.save_icon),
-                            contentDescription = "Save", tint = BlueLight
-                        )
-                    }
                 }
-               Text(text = "=============")
-                TextField(modifier = Modifier.weight(1f),
-                    value = viewModel.description,
-                    onValueChange = { text ->
-                        viewModel.OnEvent(NewNoteEvent.OnDescriptionChange(text))
-                    }, label = {
-                        Text(
-                            text = "Description",
-                            fontSize = 14.sp
-                        )
-                    }, colors = TextFieldDefaults.textFieldColors(
-                        containerColor = Color.White,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-
-                        ), textStyle = TextStyle(
-                        fontSize = 14.sp,
-                        color = DarkText
-                    )
-                )
             }
         }
     }

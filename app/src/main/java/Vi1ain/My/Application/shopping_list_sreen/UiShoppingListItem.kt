@@ -6,6 +6,7 @@ import Vi1ain.My.Application.ui.theme.DarkText
 import Vi1ain.My.Application.ui.theme.LightGreenBackground
 import Vi1ain.My.Application.ui.theme.LightText
 import Vi1ain.My.Application.ui.theme.Purple
+import Vi1ain.My.Application.utils.ProgressHelper
 import Vi1ain.My.Application.utils.Routes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -39,7 +40,7 @@ fun UiShoppingListItem(item: ShoppingListItem, onEvent: (ShoppingListEvent) -> U
         Card(modifier = Modifier
             .clickable {
 
-onEvent(ShoppingListEvent.OnItemClick(route = Routes.ADD_ITEM+"/${item.id}"))
+                onEvent(ShoppingListEvent.OnItemClick(route = Routes.ADD_ITEM + "/${item.id}"))
             }
 
             .fillMaxWidth()
@@ -68,7 +69,11 @@ onEvent(ShoppingListEvent.OnItemClick(route = Routes.ADD_ITEM+"/${item.id}"))
                     modifier = Modifier
                         .padding(top = 5.dp)
                         .fillMaxWidth(),
-                    trackColor = Color.Green, progress = 0.5f
+                    trackColor = Color.Green,
+                    progress = ProgressHelper.GetProgress(
+                        item.allItemsCount,
+                        item.allSelectedItemsCount
+                    )
                 )
             }
         }

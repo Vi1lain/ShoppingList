@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NoteListViewModel @Inject constructor(
-   private val repository: NoteItemRepository
+    private val repository: NoteItemRepository
 ) : ViewModel(), DialogController {
     val noteList = repository.getAllItems()
     private var noteItem: NoteItem? = null
@@ -41,9 +41,14 @@ class NoteListViewModel @Inject constructor(
             is NoteListEvent.OnItemClick -> {
                 SendUiEvent(UiEvent.Navigate(event.route))
             }
+
             is NoteListEvent.OnShowDeleteDialog -> {
                 openDialog.value = true
                 noteItem = event.item
+            }
+
+            is NoteListEvent.OnDoneDeleteItem -> {
+                viewModelScope.launch { repository.insertItem(noteItem!!) }
             }
         }
     }
@@ -57,6 +62,7 @@ class NoteListViewModel @Inject constructor(
             is DialgoEvent.OnConfirm -> {
                 viewModelScope.launch {
                     repository.deleteItem(noteItem!!)
+                    SendUiEvent(UiEvent.ShowSnackBar("Undone delete item?"))
                 }
                 openDialog.value = false
             }

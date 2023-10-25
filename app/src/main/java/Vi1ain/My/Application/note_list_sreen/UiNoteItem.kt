@@ -4,6 +4,7 @@ import Vi1ain.My.Application.data.NoteItem
 import Vi1ain.My.Application.ui.theme.BlueLight
 import Vi1ain.My.Application.ui.theme.LightText
 import Vi1ain.My.Application.utils.Routes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -43,7 +44,7 @@ fun UiNoteItem(
                 )
             }
     ) {
-        Column(Modifier.fillMaxWidth()) {
+        Column(Modifier.fillMaxWidth().background(Color.White)) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()

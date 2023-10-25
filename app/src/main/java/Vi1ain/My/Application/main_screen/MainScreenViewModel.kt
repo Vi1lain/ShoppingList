@@ -6,6 +6,7 @@ import Vi1ain.My.Application.dialog.DialgoEvent
 import Vi1ain.My.Application.dialog.DialogController
 import Vi1ain.My.Application.utils.Routes
 import Vi1ain.My.Application.utils.UiEvent
+import Vi1ain.My.Application.utils.getCurrentTime
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -44,7 +45,7 @@ class MainScreenViewModel @Inject constructor(
                         ShoppingListItem(
                             null,
                             editableText.value,
-                            "02-08-1988",
+                            getCurrentTime(),
                             0,
                             0
                         )
@@ -57,7 +58,7 @@ class MainScreenViewModel @Inject constructor(
                 if (event.route == Routes.SHOPPING_LIST) {
                     openDialog.value = true
                 } else {
-                    SendUiEvent(UiEvent.NavigateMain(Routes.NEW_NOTE))
+                    SendUiEvent(UiEvent.NavigateMain(Routes.NEW_NOTE + "/-1"))
                 }
             }
 
