@@ -18,15 +18,18 @@ import androidx.compose.ui.unit.dp
 
 
 @Composable
-fun UiColorItem(item:ColorItem,) {
+fun UiColorItem(
+    item: ColorItem,
+    onEvent: (SettingsEvent) -> Unit
+) {
     IconButton(
-        onClick = { }, modifier = Modifier
+        onClick = { onEvent(SettingsEvent.OnItemSelected(item.color)) }, modifier = Modifier
             .padding(horizontal = 5.dp)
             .clip(CircleShape)
             .size(35.dp)
             .background(color = Color(android.graphics.Color.parseColor(item.color)))
     ) {
-       if (item.isSelected) Icon(
+        if (item.isSelected) Icon(
             painter = painterResource(id = R.drawable.check),
             contentDescription = "check",
             tint = Color.White

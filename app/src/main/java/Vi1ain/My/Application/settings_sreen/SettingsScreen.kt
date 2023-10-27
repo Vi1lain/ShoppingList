@@ -26,6 +26,7 @@ fun SettingsScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
+
         Text(text = "Title color",
             fontSize = 16.sp)
         Text(text = "Select a title color", fontSize = 12.sp, color = Color.Gray)
@@ -34,7 +35,9 @@ fun SettingsScreen(
                 .fillMaxWidth()
                 .padding(top = 10.dp)
         ) {
-            items(list) { item -> UiColorItem(item = item) }
+            items(list) { item -> UiColorItem(item = item) {event->
+               viewModel.OnEvent(event)
+            } }
 
         }
     }

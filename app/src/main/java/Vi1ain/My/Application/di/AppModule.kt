@@ -7,6 +7,7 @@ import Vi1ain.My.Application.data.NoteItemRepoImpl
 import Vi1ain.My.Application.data.NoteItemRepository
 import Vi1ain.My.Application.data.ShopingListRepoImpl
 import Vi1ain.My.Application.data.ShoppingListRepository
+import Vi1ain.My.Application.data_store.DataStoreManager
 import android.app.Application
 import androidx.room.Room
 import dagger.Module
@@ -42,5 +43,11 @@ object AppModule {
     @Singleton
     fun provideNoteItemRepository(db: MainDB): NoteItemRepository {
         return NoteItemRepoImpl(db.noteDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDataStoreManager(app: Application): DataStoreManager {
+        return DataStoreManager(app)
     }
 }
